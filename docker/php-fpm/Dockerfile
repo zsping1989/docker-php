@@ -51,11 +51,13 @@ COPY ./php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 RUN yum -y update
 RUN yum clean all
 
-# Define work directory
+# 定义工作目录
 WORKDIR /var/www/laravel
+# 将挂载过来的代码全部复制到容器中方便镜像打包到时候将代码一起打包
+COPY . /var/www/laravel
 
 
-# Expose ports
+# 暴露端口
 EXPOSE 9000
 
 

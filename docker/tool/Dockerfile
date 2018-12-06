@@ -48,17 +48,36 @@ COPY ./php/www.conf /etc/php-fpm.d/www.conf
 COPY ./php/php.ini /usr/local/etc/php/php.ini
 COPY ./php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
-# Install Composer
+# 安装composer
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/bin/composer
 RUN composer --version
+# 设置国内镜像
 RUN composer config -g repo.packagist composer https://packagist.phpcomposer.com
+# 设置环境变量
+RUN echo 'export PATH="$PATH:/root/.composer/vendor/bin"' > /etc/profile
+RUN export PATH=$PATH:/root/.composer/vendor/bin
+# 安装laravel构建工具
+RUN composer global require "laravel/installer"
+RUN ln -s /root/.composer/vendor/bin/laravel /usr/bin/laravel
+RUN laravel -v
+# 安装phpunit自动测试工具
+RUN wget http://phar.phpunit.cn/phpunit.phar
+RUN chmod +x phpunit.phar
+RUN mv ./phpunit.phar /root/.composer/vendor/bin
+RUN ln -s /root/.composer/vendor/bin/phpunit.phar /usr/bin/phpunit
+RUN phpunit --version
 
-# Install Node.js
+# 安装php代码检查规范
+RUN composer global require "squizlabs/php_codesniffer"
+RUN php /root/.composer/vendor/bin/phpcs -h
+
+# 安装nodejs
 RUN curl -sL https://rpm.nodesource.com/setup_7.x | bash -
 RUN yum -y install nodejs
 RUN yum list installed nodejs
 RUN node -v
+# 设置nodejs为国内镜像
 RUN npm install -g cnpm --registry=https://registry.npm.taobao.org
 RUN cnpm -v
 
@@ -66,5 +85,10 @@ RUN cnpm -v
 RUN yum -y update
 RUN yum clean all
 
+#安装小程序开发工具wepy
+RUN cnpm install wepy-cli -g
+
 # Define work directory
 WORKDIR /var/www/laravel
+
+
