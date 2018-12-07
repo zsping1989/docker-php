@@ -88,6 +88,18 @@ RUN yum clean all
 #安装小程序开发工具wepy
 RUN cnpm install wepy-cli -g
 
+# 安装vue构建命令
+RUN cnpm install -g vue-cli
+RUN vue --version
+
+# 安装tarojs用于各小程序，H5开发
+RUN cnpm install -g @tarojs/cli
+RUN taro --version
+
+RUN cnpm install -g yarn
+RUN yarn --version
+
+
 # Define work directory
 WORKDIR /var/www/laravel
 
