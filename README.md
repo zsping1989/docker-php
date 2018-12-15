@@ -1,7 +1,7 @@
 # docker-php
 php+nginx+mysql+redis+其它工具环境
 
-- 先fork公司项目代码(https://github.com/zsping1989/docker-php.git)到自己的git仓库
+- 先fork项目代码(https://github.com/zsping1989/docker-php.git)到自己的git仓库
 
 - 下载代码自己仓库中的项目代码(这里以我的为例子)
 ```
